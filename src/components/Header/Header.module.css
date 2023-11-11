@@ -1,0 +1,8 @@
+.header {
+  height: 100px;
+  background-color: teal;
+}
+.header_logo {
+  height: 80px;
+  width: 80px;
+}
