@@ -1,6 +1,7 @@
 .header {
   height: 100px;
   background-color: teal;
+  padding: 10px 15px;
 }
 .header_logo {
   height: 80px;

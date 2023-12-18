@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+}
+.dialogs {
+  margin-right: 50px;
+}
+.messages {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
