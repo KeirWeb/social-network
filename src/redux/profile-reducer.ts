@@ -15,8 +15,16 @@ export type ProfileActions =
   | ReturnType<typeof addPostAC>
   | ReturnType<typeof onChangeNewPostTextValueAC>;
 
+const initialState = {
+  newPostText: "",
+  posts: [
+    { id: 1, message: "Hi, how are you?", likes: 2 },
+    { id: 2, message: "It's mt first post", likes: 4 },
+  ],
+};
+
 const profileReducer = (
-  state: ProfileReducer,
+  state: ProfileReducer = initialState,
   action: ProfileActions
 ): ProfileReducer => {
   switch (action.type) {
@@ -26,12 +34,10 @@ const profileReducer = (
         message: action.postMessage,
         likes: 0,
       };
-      state.posts.push(newMessage);
-      state.newPostText = "";
-      return state;
+
+      return { ...state, posts: [...state.posts, newMessage], newPostText: "" };
     case ONCHANGE_NEW_POST_TEXT_VALUE:
-      state.newPostText = action.value;
-      return state;
+      return { ...state, newPostText: action.value };
 
     default:
       return state;

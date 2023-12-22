@@ -2,47 +2,38 @@ import React, { FC } from "react";
 import s from "./Dialogs.module.css";
 import Dialog_item from "./Dialog/Dialog_item";
 import Message_item from "./Message/Message_item";
-import { ActionsType } from "../../../redux/state";
-import {
-  MessageType,
-  UserType,
-  addMessageAC,
-  onChangeNewMessageTextValueAC,
-} from "../../../redux/dialogs-reducer";
+import { MessageType, UserType } from "../../../redux/dialogs-reducer";
+import { DialogPropsType } from "./DialogsContainer";
 
-type DialogsPropsType = {
-  state: {
-    newMessageText: string;
-    users: Array<UserType>;
-    messages: Array<MessageType>;
-  };
-  dispatch: (action: ActionsType) => void;
-};
-const Dialogs: FC<DialogsPropsType> = ({ state, dispatch }) => {
+const Dialogs: FC<DialogPropsType> = ({
+  dialogPage,
+  onChangeNewMessageValue,
+  addMessage,
+}) => {
   const onChangeNewMessageValueHandler = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    dispatch(onChangeNewMessageTextValueAC(e.currentTarget.value));
+    onChangeNewMessageValue(e.currentTarget.value);
   };
 
   const addMessageHandler = () => {
-    dispatch(addMessageAC());
+    addMessage();
   };
   return (
     <div className={s.container}>
       <div className={s.dialogs}>
-        {state.users.map((user) => (
-          <Dialog_item user={user} />
+        {dialogPage.users.map((user) => (
+          <Dialog_item key={user.id} user={user} />
         ))}
       </div>
       <div className={s.messages}>
-        {state.messages.map((message) => (
-          <Message_item message={message} />
+        {dialogPage.messages.map((message) => (
+          <Message_item key={message.id} message={message} />
         ))}
         <div>
           <textarea
             placeholder="Enter your message"
-            value={state.newMessageText}
+            value={dialogPage.newMessageText}
             onChange={(e) => onChangeNewMessageValueHandler(e)}
           />
           <button onClick={addMessageHandler}>add message</button>

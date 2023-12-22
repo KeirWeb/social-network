@@ -21,7 +21,7 @@ export type StateType = {
 export type StoreType = {
   _state: StateType;
   getState: () => StateType;
-  rerenderEntireTree: () => void;
+  rerenderEntireTree: (state: any) => void;
   subscribe: (observer: any) => void;
   dispatch: (action: ActionsType) => void;
 };
@@ -65,6 +65,6 @@ export let store: StoreType = {
   dispatch(action: any) {
     this._state.profilePage = profileReducer(this._state.profilePage, action);
     this._state.dialogPage = dialogsReducer(this._state.dialogPage, action);
-    this.rerenderEntireTree();
+    this.rerenderEntireTree(this._state);
   },
 };
