@@ -2,6 +2,7 @@ export const TOGGLE_FOLLOWED = "TOGGLE-FOLLOWED";
 export const SET_USERS = "SET-USERS";
 export const CHANGE_CURRENT_PAGE = "CHANGE-CURRENT-PAGE";
 export const CHANGE_TOTAL_PAGES_COUNT = "CHANGE-TOTAL-PAGES-COUNT";
+export const CHANGE_IS_FETCHING = "CHANGE-IS-FETCHING";
 
 export type UserType = {
   id: number;
@@ -19,19 +20,22 @@ export type UserReducerType = {
   pageSize: number;
   currentPage: number;
   totalPageCount: number;
+  isFetching: boolean;
 };
 
 export type UsersActions =
   | ReturnType<typeof toggleFollowedAC>
   | ReturnType<typeof setUsersAC>
   | ReturnType<typeof changeCurrentPageAC>
-  | ReturnType<typeof changeTotalPagesCountAC>;
+  | ReturnType<typeof changeTotalPagesCountAC>
+  | ReturnType<typeof changeIsFetchingAC>;
 
 const initialState: UserReducerType = {
   users: [],
   pageSize: 5,
   currentPage: 1,
   totalPageCount: 10,
+  isFetching: false,
 };
 
 const usersReducer = (
@@ -61,6 +65,10 @@ const usersReducer = (
         ...state,
         totalPageCount: action.pages,
       };
+
+    case CHANGE_IS_FETCHING:
+      return { ...state, isFetching: action.isFetching };
+
     default:
       return state;
   }
@@ -78,5 +86,7 @@ export const changeCurrentPageAC = (page: number) => {
 export const changeTotalPagesCountAC = (pages: number) => {
   return { type: CHANGE_TOTAL_PAGES_COUNT, pages } as const;
 };
-
+export const changeIsFetchingAC = (isFetching: boolean) => {
+  return { type: CHANGE_IS_FETCHING, isFetching } as const;
+};
 export default usersReducer;

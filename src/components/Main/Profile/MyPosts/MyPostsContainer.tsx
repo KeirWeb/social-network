@@ -25,16 +25,10 @@ const mapStateToProps = (state: AppRootState): MapStateToProps => {
     profilePage: state.profilePage,
   };
 };
-const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => {
-  return {
-    addPost: (title: string) => {
-      dispatch(addPostAC(title));
-    },
-    onChangeNewPostTextValue: (value: string) => {
-      dispatch(onChangeNewPostTextValueAC(value));
-    },
-  };
-};
-const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts);
+
+const MyPostsContainer = connect(mapStateToProps, {
+  addPost: addPostAC,
+  onChangeNewPostTextValue: onChangeNewPostTextValueAC,
+})(MyPosts);
 
 export default MyPostsContainer;

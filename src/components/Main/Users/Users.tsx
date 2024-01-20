@@ -2,12 +2,14 @@ import React, { FC } from "react";
 import { UserType } from "../../../redux/users-reducer";
 import s from "./Users.module.css";
 import noAvatar from "../../../assets/images/no-avatar.png";
+import loader from "../../../assets/images/Spinner.gif";
 
 type UsersPropsType = {
   users: UserType[];
   pageSize: number;
   currentPage: number;
   totalPageCount: number;
+  isFetching: boolean;
   toggleFollowed: (id: number) => void;
   onChangePage: (page: number) => void;
 };
@@ -19,6 +21,7 @@ const Users: FC<UsersPropsType> = ({
   users,
   toggleFollowed,
   onChangePage,
+  isFetching,
 }) => {
   let pagesCount = Math.ceil(totalPageCount / pageSize);
   let pages = [];
@@ -36,27 +39,33 @@ const Users: FC<UsersPropsType> = ({
           {u}
         </span>
       ))}
-      {users.map((u) => (
-        <div key={u.id}>
-          <span>{u.name}</span>
-          <span>
-            <div>
-              <img src={noAvatar} alt="avatar" className={s.avatarImg} />
+      {isFetching ? (
+        <img src={loader} alt="Loading..." />
+      ) : (
+        <div>
+          {users.map((u) => (
+            <div key={u.id}>
+              <span>{u.name}</span>
+              <span>
+                <div>
+                  <img src={noAvatar} alt="avatar" className={s.avatarImg} />
+                </div>
+                <div>
+                  <button onClick={() => toggleFollowed(u.id)}>
+                    {u.followed ? "UnFollow" : "Follow"}
+                  </button>
+                </div>
+              </span>
+              <span>
+                <span>
+                  <div>{u.name}</div>
+                  <div>{u.status}</div>
+                </span>
+              </span>
             </div>
-            <div>
-              <button onClick={() => toggleFollowed(u.id)}>
-                {u.followed ? "UnFollow" : "Follow"}
-              </button>
-            </div>
-          </span>
-          <span>
-            <span>
-              <div>{u.name}</div>
-              <div>{u.status}</div>
-            </span>
-          </span>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 };
