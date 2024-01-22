@@ -14,7 +14,7 @@ const Main: FC<MainPropsType> = () => {
     <div className={s.main}>
       <Navbar />
       <div className={s.container}>
-        <Route path="/profile" render={() => <Profile />} />
+        <Route path="/profile/:userId?" render={() => <Profile />} />
         <Route path="/messages" render={() => <Messages />} />
         <Route path="/dialogs" render={() => <DialogsContainer />} />
         <Route path="/users" render={() => <UsersContainer />} />

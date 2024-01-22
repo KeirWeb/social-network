@@ -11,6 +11,7 @@ import {
   toggleFollowedAC,
 } from "../../../redux/users-reducer";
 import UsersApiContainer from "./UsersApiContainer";
+import { changeCurrentUserIdAC } from "../../../redux/profile-reducer";
 
 type MapStateToPropsType = {
   users: UserType[];
@@ -36,6 +37,7 @@ const UsersContainer = connect(mapStateToProps, {
   changeCurrentPage: changeCurrentPageAC,
   changeTotalPageCount: changeTotalPagesCountAC,
   changeIsFetching: changeIsFetchingAC,
+  changeCurrentUserId: changeCurrentUserIdAC,
 })(UsersApiContainer);
 
 export default UsersContainer;

@@ -30,6 +30,11 @@ const Sidebar = () => {
             Settings
           </NavLink>
         </li>
+        <li className={s.item}>
+          <NavLink activeClassName={s.activeClassName} to="/users">
+            Users
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );

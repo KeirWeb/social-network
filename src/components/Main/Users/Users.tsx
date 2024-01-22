@@ -3,6 +3,8 @@ import { UserType } from "../../../redux/users-reducer";
 import s from "./Users.module.css";
 import noAvatar from "../../../assets/images/no-avatar.png";
 import loader from "../../../assets/images/Spinner.gif";
+import { NavLink } from "react-router-dom";
+import axios from "axios";
 
 type UsersPropsType = {
   users: UserType[];
@@ -12,6 +14,13 @@ type UsersPropsType = {
   isFetching: boolean;
   toggleFollowed: (id: number) => void;
   onChangePage: (page: number) => void;
+  changeCurrentUserId: (id: number) => void;
+};
+
+type ResponseType<D> = {
+  resultCode: number;
+  messages: string[];
+  data: D;
 };
 
 const Users: FC<UsersPropsType> = ({
@@ -22,6 +31,7 @@ const Users: FC<UsersPropsType> = ({
   toggleFollowed,
   onChangePage,
   isFetching,
+  changeCurrentUserId,
 }) => {
   let pagesCount = Math.ceil(totalPageCount / pageSize);
   let pages = [];
@@ -47,13 +57,58 @@ const Users: FC<UsersPropsType> = ({
             <div key={u.id}>
               <span>{u.name}</span>
               <span>
+                <NavLink to={`/profile/${u.id}`}>
+                  <div onClick={() => changeCurrentUserId(u.id)}>
+                    <img
+                      src={u.photos.small ? u.photos.small : noAvatar}
+                      alt="avatar"
+                      className={s.avatarImg}
+                    />
+                  </div>
+                </NavLink>
                 <div>
-                  <img src={noAvatar} alt="avatar" className={s.avatarImg} />
-                </div>
-                <div>
-                  <button onClick={() => toggleFollowed(u.id)}>
+                  {/* <button onClick={() => toggleFollowed(u.id)}>
                     {u.followed ? "UnFollow" : "Follow"}
-                  </button>
+                  </button> */}
+                  {u.followed ? (
+                    <button
+                      onClick={() => {
+                        axios
+                          .delete<ResponseType<any>>(
+                            `https://social-network.samuraijs.com/api/1.0/follow/` +
+                              u.id,
+
+                            {
+                              withCredentials: true,
+                            }
+                          )
+                          .then((res) => {
+                            if (res.data.resultCode === 0) toggleFollowed(u.id);
+                          });
+                      }}
+                    >
+                      UnFollow
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        axios
+                          .post<ResponseType<any>>(
+                            `https://social-network.samuraijs.com/api/1.0/follow/` +
+                              u.id,
+                            {},
+                            {
+                              withCredentials: true,
+                            }
+                          )
+                          .then((res) => {
+                            if (res.data.resultCode === 0) toggleFollowed(u.id);
+                          });
+                      }}
+                    >
+                      Follow
+                    </button>
+                  )}
                 </div>
               </span>
               <span>

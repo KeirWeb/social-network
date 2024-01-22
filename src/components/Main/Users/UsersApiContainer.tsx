@@ -1,7 +1,7 @@
 import React from "react";
 import { UserType } from "../../../redux/users-reducer";
-import axios from "axios";
 import Users from "./Users";
+import { usersApi } from "../../../api/api";
 
 type UsersApiContainerPropsType = {
   users: UserType[];
@@ -14,24 +14,17 @@ type UsersApiContainerPropsType = {
   changeCurrentPage: (page: number) => void;
   changeTotalPageCount: (pages: number) => void;
   changeIsFetching: (isFetching: boolean) => void;
-};
-
-type ResponseType<U> = {
-  items: U[];
-  totalCount: number;
-  error: string;
+  changeCurrentUserId: (id: number) => void;
 };
 
 class UsersApiContainer extends React.Component<UsersApiContainerPropsType> {
   componentDidMount(): void {
     this.props.changeIsFetching(true);
-    axios
-      .get<ResponseType<UserType>>(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`
-      )
+    usersApi
+      .getUsers(1, this.props.pageSize)
       .then((res) => {
-        this.props.setUsers(res.data.items);
-        this.props.changeTotalPageCount(res.data.totalCount);
+        this.props.setUsers(res.items);
+        this.props.changeTotalPageCount(res.totalCount);
         this.props.changeIsFetching(false);
       })
       .catch((err) => {
@@ -42,15 +35,14 @@ class UsersApiContainer extends React.Component<UsersApiContainerPropsType> {
   onChangePage = (page: number) => {
     this.props.changeIsFetching(true);
 
-    axios
-      .get<ResponseType<UserType>>(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`
-      )
+    usersApi
+      .getUsers(page, this.props.pageSize)
       .then((res) => {
-        this.props.setUsers(res.data.items);
+        this.props.setUsers(res.items);
         this.props.changeCurrentPage(page);
         this.props.changeIsFetching(false);
       })
+
       .catch((err) => {
         console.log(err);
         this.props.changeIsFetching(false);
@@ -66,6 +58,7 @@ class UsersApiContainer extends React.Component<UsersApiContainerPropsType> {
         toggleFollowed={this.props.toggleFollowed}
         onChangePage={this.onChangePage}
         isFetching={this.props.isFetching}
+        changeCurrentUserId={this.props.changeCurrentUserId}
       />
     );
   }
