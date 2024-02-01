@@ -1,3 +1,6 @@
+import { Dispatch } from "redux";
+import { usersApi } from "../api/api";
+
 export type AuthReducerType = {
   id: number;
   email: string;
@@ -17,7 +20,9 @@ type ChangeIsAuthActionType = {
   type: "CHANGE-IS-AUTH";
 };
 type ActionsType = SetAuthUserDataActionType | ChangeIsAuthActionType;
-const initialState = {} as AuthReducerType;
+const initialState = {
+  isAuth: false,
+} as AuthReducerType;
 export const authReducer = (
   state: AuthReducerType = initialState,
   action: ActionsType
@@ -42,4 +47,8 @@ export const setAuthUserDataAC = (
 
 export const changeIsAuthAC = (): ChangeIsAuthActionType => {
   return { type: "CHANGE-IS-AUTH" };
+};
+
+export const changeIsAuthTC = () => (dispatch: Dispatch) => {
+  usersApi.authorizationСheck().then((res) => console.log(res.data));
 };

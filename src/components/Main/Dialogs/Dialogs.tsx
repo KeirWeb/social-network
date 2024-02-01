@@ -2,13 +2,13 @@ import React, { FC } from "react";
 import s from "./Dialogs.module.css";
 import Dialog_item from "./Dialog/Dialog_item";
 import Message_item from "./Message/Message_item";
-import { MessageType, UserType } from "../../../redux/dialogs-reducer";
 import { DialogPropsType } from "./DialogsContainer";
 
 const Dialogs: FC<DialogPropsType> = ({
   dialogPage,
   onChangeNewMessageValue,
   addMessage,
+  auth,
 }) => {
   const onChangeNewMessageValueHandler = (
     e: React.ChangeEvent<HTMLTextAreaElement>

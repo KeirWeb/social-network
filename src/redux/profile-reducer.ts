@@ -1,3 +1,6 @@
+import { Dispatch } from "redux";
+import { usersApi } from "../api/api";
+
 export const ADD_POST = "ADD-POST";
 export const ONCHANGE_NEW_POST_TEXT_VALUE = "ONCHANGE-NEW-POST-TEXT-VALUE";
 export const SET_PROFILE = "SET-PROFILE";
@@ -91,4 +94,9 @@ export const changeCurrentUserIdAC = (id: number) => {
   return { type: CHANGE_CURRENT_USER_ID, id } as const;
 };
 
+export const getCurrentUserTC = (userId: number) => (dispatch: Dispatch) => {
+  usersApi.getCurrentUser(userId).then((res) => {
+    dispatch(setUserProfileAC(res.data));
+  });
+};
 export default profileReducer;

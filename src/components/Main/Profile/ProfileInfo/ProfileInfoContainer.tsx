@@ -1,13 +1,13 @@
 import React from "react";
 import ProfileInfo from "./ProfileInfo";
-import axios from "axios";
 import { AppRootState } from "../../../../redux/redux-store";
 import { connect } from "react-redux";
 import {
   ProfileType,
-  setUserProfileAC,
+  getCurrentUserTC,
 } from "../../../../redux/profile-reducer";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { withAuthRedirect } from "../../../../hoc/withAuthRedirect";
 type PathParamsType = {
   userId: string;
 };
@@ -19,15 +19,7 @@ class ProfileInfoContainer extends React.Component<ProfileInfoContainerPropsType
   componentDidMount(): void {
     let userId = Number(this.props.match.params.userId);
     if (!userId) userId = 2;
-
-    axios
-      .get<ProfileType>(
-        `https://social-network.samuraijs.com/api/1.0//profile/` + userId
-      )
-
-      .then((res) => {
-        this.props.setUserProfileAC(res.data);
-      });
+    this.props.getCurrentUserTC(userId);
   }
   render(): React.ReactNode {
     return <ProfileInfo profile={this.props.profile} />;
@@ -38,7 +30,7 @@ type MapStateToPropsType = {
   currentUserId: number;
 };
 type MapDispatchToPropsType = {
-  setUserProfileAC: (profile: ProfileType) => void;
+  getCurrentUserTC: (userId: number) => void;
 };
 
 const mapStateToProps = (state: AppRootState): MapStateToPropsType => {
@@ -50,6 +42,6 @@ const mapStateToProps = (state: AppRootState): MapStateToPropsType => {
 
 const WithUrlDataContainerComponent = withRouter(ProfileInfoContainer);
 
-export default connect(mapStateToProps, { setUserProfileAC })(
-  WithUrlDataContainerComponent
+export default withAuthRedirect(
+  connect(mapStateToProps, { getCurrentUserTC })(WithUrlDataContainerComponent)
 );

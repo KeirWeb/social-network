@@ -12,9 +12,11 @@ type UsersPropsType = {
   currentPage: number;
   totalPageCount: number;
   isFetching: boolean;
-  toggleFollowed: (id: number) => void;
+  followingInProgress: number[];
+  toggleFollowed: (id: number, isFollow: boolean) => void;
   onChangePage: (page: number) => void;
   changeCurrentUserId: (id: number) => void;
+  toggleFollowingInProgress: (id: number, inProgress: boolean) => void;
 };
 
 type ResponseType<D> = {
@@ -32,12 +34,15 @@ const Users: FC<UsersPropsType> = ({
   onChangePage,
   isFetching,
   changeCurrentUserId,
+  followingInProgress,
+  toggleFollowingInProgress,
 }) => {
   let pagesCount = Math.ceil(totalPageCount / pageSize);
   let pages = [];
   for (let i = 1; i <= pagesCount; i++) {
     pages.push(i);
   }
+
   return (
     <div>
       {pages.map((u) => (
@@ -67,44 +72,19 @@ const Users: FC<UsersPropsType> = ({
                   </div>
                 </NavLink>
                 <div>
-                  {/* <button onClick={() => toggleFollowed(u.id)}>
-                    {u.followed ? "UnFollow" : "Follow"}
-                  </button> */}
                   {u.followed ? (
                     <button
+                      disabled={followingInProgress.some((id) => id === u.id)}
                       onClick={() => {
-                        axios
-                          .delete<ResponseType<any>>(
-                            `https://social-network.samuraijs.com/api/1.0/follow/` +
-                              u.id,
-
-                            {
-                              withCredentials: true,
-                            }
-                          )
-                          .then((res) => {
-                            if (res.data.resultCode === 0) toggleFollowed(u.id);
-                          });
+                        toggleFollowed(u.id, false);
                       }}
                     >
                       UnFollow
                     </button>
                   ) : (
                     <button
-                      onClick={() => {
-                        axios
-                          .post<ResponseType<any>>(
-                            `https://social-network.samuraijs.com/api/1.0/follow/` +
-                              u.id,
-                            {},
-                            {
-                              withCredentials: true,
-                            }
-                          )
-                          .then((res) => {
-                            if (res.data.resultCode === 0) toggleFollowed(u.id);
-                          });
-                      }}
+                      disabled={followingInProgress.some((id) => id === u.id)}
+                      onClick={() => toggleFollowed(u.id, true)}
                     >
                       Follow
                     </button>

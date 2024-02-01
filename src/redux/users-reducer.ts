@@ -1,8 +1,13 @@
+import { Dispatch } from "redux";
+import { usersApi } from "../api/api";
+import axios from "axios";
+
 export const TOGGLE_FOLLOWED = "TOGGLE-FOLLOWED";
 export const SET_USERS = "SET-USERS";
 export const CHANGE_CURRENT_PAGE = "CHANGE-CURRENT-PAGE";
 export const CHANGE_TOTAL_PAGES_COUNT = "CHANGE-TOTAL-PAGES-COUNT";
 export const CHANGE_IS_FETCHING = "CHANGE-IS-FETCHING";
+export const TOGGLE_FOLLOWING_IN_PROGRESS = '"TOGGLE-FOLLOWING-IN-PROGRESS"';
 
 export type UserType = {
   id: number;
@@ -21,6 +26,7 @@ export type UserReducerType = {
   currentPage: number;
   totalPageCount: number;
   isFetching: boolean;
+  followingInProgress: number[];
 };
 
 export type UsersActions =
@@ -28,7 +34,8 @@ export type UsersActions =
   | ReturnType<typeof setUsersAC>
   | ReturnType<typeof changeCurrentPageAC>
   | ReturnType<typeof changeTotalPagesCountAC>
-  | ReturnType<typeof changeIsFetchingAC>;
+  | ReturnType<typeof changeIsFetchingAC>
+  | ReturnType<typeof toggleFollowingInProgressAC>;
 
 const initialState: UserReducerType = {
   users: [],
@@ -36,6 +43,7 @@ const initialState: UserReducerType = {
   currentPage: 1,
   totalPageCount: 10,
   isFetching: false,
+  followingInProgress: [],
 };
 
 const usersReducer = (
@@ -68,6 +76,13 @@ const usersReducer = (
 
     case CHANGE_IS_FETCHING:
       return { ...state, isFetching: action.isFetching };
+    case TOGGLE_FOLLOWING_IN_PROGRESS:
+      return {
+        ...state,
+        followingInProgress: action.inProgress
+          ? [...state.followingInProgress, action.id]
+          : state.followingInProgress.filter((id) => id !== action.id),
+      };
 
     default:
       return state;
@@ -89,4 +104,53 @@ export const changeTotalPagesCountAC = (pages: number) => {
 export const changeIsFetchingAC = (isFetching: boolean) => {
   return { type: CHANGE_IS_FETCHING, isFetching } as const;
 };
+export const toggleFollowingInProgressAC = (
+  id: number,
+  inProgress: boolean
+) => {
+  return { type: TOGGLE_FOLLOWING_IN_PROGRESS, id, inProgress } as const;
+};
+
+export const getUsersTC =
+  (currentPage: number = 1) =>
+  (dispatch: Dispatch) => {
+    dispatch(changeIsFetchingAC(true));
+    usersApi.getUsers(currentPage, initialState.pageSize).then((res) => {
+      dispatch(setUsersAC(res.items));
+      dispatch(changeTotalPagesCountAC(res.totalCount));
+      dispatch(changeIsFetchingAC(false));
+      dispatch(changeCurrentPageAC(currentPage));
+    });
+  };
+
+export const toggleFollowedTC =
+  (userId: number, isFollow: boolean) => (dispatch: Dispatch) => {
+    dispatch(toggleFollowingInProgressAC(userId, true));
+    if (isFollow) {
+      usersApi
+        .followToUser(userId)
+        .then((res) => {
+          if (res.data.resultCode === 0) {
+            dispatch(toggleFollowedAC(userId));
+          }
+          dispatch(toggleFollowingInProgressAC(userId, false));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      usersApi
+        .unfollowToUser(userId)
+        .then((res) => {
+          if (res.data.resultCode === 0) {
+            dispatch(toggleFollowedAC(userId));
+          }
+          dispatch(toggleFollowingInProgressAC(userId, false));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
 export default usersReducer;

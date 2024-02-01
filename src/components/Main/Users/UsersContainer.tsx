@@ -1,5 +1,4 @@
 import React from "react";
-import { Dispatch } from "redux";
 import { AppRootState } from "../../../redux/redux-store";
 import { connect } from "react-redux";
 import {
@@ -7,8 +6,10 @@ import {
   changeCurrentPageAC,
   changeIsFetchingAC,
   changeTotalPagesCountAC,
+  getUsersTC,
   setUsersAC,
-  toggleFollowedAC,
+  toggleFollowedTC,
+  toggleFollowingInProgressAC,
 } from "../../../redux/users-reducer";
 import UsersApiContainer from "./UsersApiContainer";
 import { changeCurrentUserIdAC } from "../../../redux/profile-reducer";
@@ -19,6 +20,7 @@ type MapStateToPropsType = {
   currentPage: number;
   totalPageCount: number;
   isFetching: boolean;
+  followingInProgress: number[];
 };
 
 const mapStateToProps = (state: AppRootState): MapStateToPropsType => {
@@ -28,16 +30,19 @@ const mapStateToProps = (state: AppRootState): MapStateToPropsType => {
     currentPage: state.usersPage.currentPage,
     totalPageCount: state.usersPage.totalPageCount,
     isFetching: state.usersPage.isFetching,
+    followingInProgress: state.usersPage.followingInProgress,
   };
 };
 
 const UsersContainer = connect(mapStateToProps, {
-  toggleFollowed: toggleFollowedAC,
   setUsers: setUsersAC,
   changeCurrentPage: changeCurrentPageAC,
   changeTotalPageCount: changeTotalPagesCountAC,
   changeIsFetching: changeIsFetchingAC,
   changeCurrentUserId: changeCurrentUserIdAC,
+  toggleFollowingInProgress: toggleFollowingInProgressAC,
+  getUsers: getUsersTC,
+  toggleFollowed: toggleFollowedTC,
 })(UsersApiContainer);
 
 export default UsersContainer;
