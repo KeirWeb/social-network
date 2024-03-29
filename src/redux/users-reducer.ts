@@ -1,6 +1,5 @@
 import { Dispatch } from "redux";
 import { usersApi } from "../api/api";
-import axios from "axios";
 
 export const TOGGLE_FOLLOWED = "TOGGLE-FOLLOWED";
 export const SET_USERS = "SET-USERS";

@@ -17,7 +17,8 @@ export const usersApi = {
       .then((res) => res.data);
   },
   getCurrentUser: (userId: number) => {
-    return instance.get<ProfileType>(`profile/${userId}`);
+    console.warn("Obsolete method. Please user profileApi object");
+    return profileApi.getProfile(userId);
   },
   followToUser: (userId: number) => {
     return instance.post<FollowResponseType<{}>>(`follow/${userId}`, {});
@@ -25,8 +26,39 @@ export const usersApi = {
   unfollowToUser: (userId: number) => {
     return instance.delete<FollowResponseType<{}>>(`follow/${userId}`, {});
   },
-  authorizationСheck: () => {
-    return instance.get<AuthResponseType>(`auth/me`);
+};
+
+export const profileApi = {
+  getProfile: (userId: number) => {
+    return instance.get<ProfileType>(`profile/${userId}`);
+  },
+  getProfileStatus: (userId: number) => {
+    return instance.get<string>("profile/status/" + userId);
+  },
+  updateProfileStatus: (status: string) => {
+    return instance.put<ResponseType<{}>>("profile/status", { status });
+  },
+};
+
+export const authAPI = {
+  me: () => {
+    return instance.get<ResponseType<AuthReducerType>>(`auth/me`);
+  },
+  login: (
+    email: string,
+    password: string,
+    rememberMe?: boolean,
+    captcha?: boolean
+  ) => {
+    return instance.post<ResponseType<{ userId: number }>>("/auth/login", {
+      email,
+      password,
+      rememberMe: false,
+      captcha,
+    });
+  },
+  logout: () => {
+    return instance.delete<ResponseType<{}>>("/auth/login");
   },
 };
 
@@ -41,8 +73,8 @@ type GetUsersResponseType<T> = {
   items: T[];
   totalCount: number;
 };
-type AuthResponseType = {
-  data: AuthReducerType;
+type ResponseType<T> = {
+  data: T;
   resultCode: number;
   messages: string[];
 };

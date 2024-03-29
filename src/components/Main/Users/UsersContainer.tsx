@@ -13,6 +13,14 @@ import {
 } from "../../../redux/users-reducer";
 import UsersApiContainer from "./UsersApiContainer";
 import { changeCurrentUserIdAC } from "../../../redux/profile-reducer";
+import {
+  getCurrentPage,
+  getFollowingInProgress,
+  getIsFetching,
+  getPageSize,
+  getTotalPageCount,
+  getUsers,
+} from "../../../redux/users-selectors";
 
 type MapStateToPropsType = {
   users: UserType[];
@@ -25,12 +33,12 @@ type MapStateToPropsType = {
 
 const mapStateToProps = (state: AppRootState): MapStateToPropsType => {
   return {
-    users: state.usersPage.users,
-    pageSize: state.usersPage.pageSize,
-    currentPage: state.usersPage.currentPage,
-    totalPageCount: state.usersPage.totalPageCount,
-    isFetching: state.usersPage.isFetching,
-    followingInProgress: state.usersPage.followingInProgress,
+    users: getUsers(state),
+    pageSize: getPageSize(state),
+    currentPage: getCurrentPage(state),
+    totalPageCount: getTotalPageCount(state),
+    isFetching: getIsFetching(state),
+    followingInProgress: getFollowingInProgress(state),
   };
 };
 

@@ -10,7 +10,6 @@ export type MessageType = {
   message: string;
 };
 export type DialogsReducer = {
-  newMessageText: string;
   users: Array<UserType>;
   messages: Array<MessageType>;
 };
@@ -42,15 +41,12 @@ const dialogsReducer = (
   action: DialogsActions
 ): DialogsReducer => {
   switch (action.type) {
-    case ONCHANGE_NEW_MESSAGE_VALUE:
-      return { ...state, newMessageText: action.message };
     case ADD_MESSAGE:
       const newMessage = {
         id: 4,
-        message: state.newMessageText,
+        message: action.message,
       };
 
-      state.newMessageText = "";
       return { ...state, messages: [...state.messages, newMessage] };
 
     default:
@@ -58,8 +54,8 @@ const dialogsReducer = (
   }
 };
 
-export const addMessageAC = () => {
-  return { type: ADD_MESSAGE } as const;
+export const addMessageAC = (message: string) => {
+  return { type: ADD_MESSAGE, message } as const;
 };
 export const onChangeNewMessageTextValueAC = (message: string) => {
   return { type: ONCHANGE_NEW_MESSAGE_VALUE, message } as const;

@@ -1933,10 +1933,10 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/redux-form@8.3.3":
-  version "8.3.3"
-  resolved "https://registry.yarnpkg.com/@types/redux-form/-/redux-form-8.3.3.tgz#67869d6da2936bb2806509e86356422d2d6eb288"
-  integrity sha512-RaxUMCXs72H4vSfwU4i/86/RDbQ4p3rK4/4TQvQXHJ49GTyEgdUgWDIaOnKZc84iNwvJTwv+ohDbw/tfXxLg7Q==
+"@types/redux-form@^8.3.10":
+  version "8.3.10"
+  resolved "https://registry.yarnpkg.com/@types/redux-form/-/redux-form-8.3.10.tgz#7d07fdcee7b9cb107852daa9de74c2594acc15b3"
+  integrity sha512-LExE1Ql/PY4zjjDd6otptJ/ymwCNdEJAvcXpD+cWzhHR1QZhimo8p1DIrJoAMzn3KmEC5fgaH6PNdWhCPqHJnw==
   dependencies:
     "@types/react" "*"
     redux "^3.6.0 || ^4.0.0"

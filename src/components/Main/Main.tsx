@@ -6,7 +6,7 @@ import Messages from "./Messages/Messages";
 import { Route } from "react-router-dom";
 import DialogsContainer from "./Dialogs/DialogsContainer";
 import UsersContainer from "./Users/UsersContainer";
-import Login from "./Login/Login";
+import LoginContainer from "./Login/LoginContainer";
 
 type MainPropsType = {};
 
@@ -19,7 +19,7 @@ const Main: FC<MainPropsType> = () => {
         <Route path="/messages" render={() => <Messages />} />
         <Route path="/dialogs" render={() => <DialogsContainer />} />
         <Route path="/users" render={() => <UsersContainer />} />
-        <Route path="/login" render={() => <Login />} />
+        <Route path="/login" render={() => <LoginContainer />} />
       </div>
     </div>
   );

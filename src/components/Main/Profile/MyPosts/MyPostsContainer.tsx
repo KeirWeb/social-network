@@ -6,8 +6,8 @@ import {
 } from "../../../../redux/profile-reducer";
 import MyPosts from "./MyPosts";
 import { AppRootState } from "../../../../redux/redux-store";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
+import { compose } from "redux";
 
 type MapStateToProps = {
   profilePage: ProfileReducer;
@@ -26,9 +26,9 @@ const mapStateToProps = (state: AppRootState): MapStateToProps => {
   };
 };
 
-const MyPostsContainer = connect(mapStateToProps, {
-  addPost: addPostAC,
-  onChangeNewPostTextValue: onChangeNewPostTextValueAC,
-})(MyPosts);
-
-export default MyPostsContainer;
+export default compose(
+  connect(mapStateToProps, {
+    addPost: addPostAC,
+    onChangeNewPostTextValue: onChangeNewPostTextValueAC,
+  })
+)(MyPosts);

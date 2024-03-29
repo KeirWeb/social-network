@@ -2,49 +2,24 @@ import { Component, ReactNode } from "react";
 import Header from "./Header";
 import { connect } from "react-redux";
 import { AppRootState } from "../../redux/redux-store";
-import { Dispatch } from "redux";
-import {
-  AuthReducerType,
-  changeIsAuthAC,
-  setAuthUserDataAC,
-} from "../../redux/auth-reducer";
-import axios from "axios";
+import { logoutTC } from "../../redux/auth-reducer";
 
 type HeaderContainerPropsType = MapStateToPropsType & MapDispatchToPropsType;
-type ResponseType = {
-  data: AuthReducerType;
-  resultCode: number;
-  messages: string[];
-};
+
 class HeaderContainer extends Component<HeaderContainerPropsType> {
-  componentDidMount(): void {
-    axios
-      .get<ResponseType>(
-        "https://social-network.samuraijs.com/api/1.0/auth/me",
-        { withCredentials: true }
-      )
-      .then((res) => {
-        if (res.data.resultCode === 0) {
-          const { id, email, login } = res.data.data;
-          this.props.setAuthUserData(id, email, login);
-          this.props.changeIsAuth();
-        }
-      });
-  }
   render(): ReactNode {
-    return <Header isAuth={this.props.isAuth} />;
+    return <Header isAuth={this.props.isAuth} logout={this.props.logoutTC} />;
   }
 }
 type MapStateToPropsType = {
-  id: number;
-  email: string;
-  login: string;
+  id: number | null;
+  email: string | null;
+  login: string | null;
   isAuth: boolean;
 };
 
 type MapDispatchToPropsType = {
-  setAuthUserData: (id: number, email: string, login: string) => void;
-  changeIsAuth: () => void;
+  logoutTC: () => void;
 };
 const mapStateToProps = (state: AppRootState): MapStateToPropsType => {
   return {
@@ -55,15 +30,4 @@ const mapStateToProps = (state: AppRootState): MapStateToPropsType => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToPropsType => {
-  return {
-    setAuthUserData(id: number, email: string, login: string) {
-      dispatch(setAuthUserDataAC(id, email, login));
-    },
-    changeIsAuth() {
-      dispatch(changeIsAuthAC());
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderContainer);
+export default connect(mapStateToProps, { logoutTC })(HeaderContainer);

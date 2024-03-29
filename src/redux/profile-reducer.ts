@@ -1,10 +1,11 @@
 import { Dispatch } from "redux";
-import { usersApi } from "../api/api";
+import { profileApi, usersApi } from "../api/api";
 
 export const ADD_POST = "ADD-POST";
 export const ONCHANGE_NEW_POST_TEXT_VALUE = "ONCHANGE-NEW-POST-TEXT-VALUE";
 export const SET_PROFILE = "SET-PROFILE";
 export const CHANGE_CURRENT_USER_ID = "CHANGE-CURRENT-USER-ID";
+export const SET_PROFILE_STATUS = "SET-PROFILE-STATUS";
 
 export type PostType = {
   id: number;
@@ -38,13 +39,15 @@ export type ProfileReducer = {
   posts: Array<PostType>;
   profile: ProfileType;
   currentUserId: number;
+  profileStatus: string;
 };
 
 export type ProfileActions =
   | ReturnType<typeof addPostAC>
   | ReturnType<typeof onChangeNewPostTextValueAC>
   | ReturnType<typeof setUserProfileAC>
-  | ReturnType<typeof changeCurrentUserIdAC>;
+  | ReturnType<typeof changeCurrentUserIdAC>
+  | ReturnType<typeof setProfileStatusAC>;
 const initialState = {
   newPostText: "",
   posts: [
@@ -53,6 +56,7 @@ const initialState = {
   ],
   profile: null,
   currentUserId: 2,
+  profileStatus: "",
 } as ProfileReducer;
 
 const profileReducer = (
@@ -75,7 +79,8 @@ const profileReducer = (
 
     case CHANGE_CURRENT_USER_ID:
       return { ...state, currentUserId: action.id };
-
+    case SET_PROFILE_STATUS:
+      return { ...state, profileStatus: action.newStatus };
     default:
       return state;
   }
@@ -93,10 +98,26 @@ export const setUserProfileAC = (profile: ProfileType) => {
 export const changeCurrentUserIdAC = (id: number) => {
   return { type: CHANGE_CURRENT_USER_ID, id } as const;
 };
+export const setProfileStatusAC = (newStatus: string) => {
+  return { type: SET_PROFILE_STATUS, newStatus } as const;
+};
 
 export const getCurrentUserTC = (userId: number) => (dispatch: Dispatch) => {
   usersApi.getCurrentUser(userId).then((res) => {
     dispatch(setUserProfileAC(res.data));
   });
 };
+export const getProfileStatusTC = (userId: number) => (dispatch: Dispatch) => {
+  profileApi.getProfileStatus(userId).then((res) => {
+    dispatch(setProfileStatusAC(res.data));
+  });
+};
+export const updateProfileStatusTC =
+  (newStatus: string) => (dispatch: Dispatch) => {
+    profileApi.updateProfileStatus(newStatus).then((res) => {
+      if (res.data.resultCode === 0) {
+        dispatch(setProfileStatusAC(newStatus));
+      }
+    });
+  };
 export default profileReducer;

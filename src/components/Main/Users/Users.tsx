@@ -4,7 +4,7 @@ import s from "./Users.module.css";
 import noAvatar from "../../../assets/images/no-avatar.png";
 import loader from "../../../assets/images/Spinner.gif";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
+import Paginator from "./Paginator";
 
 type UsersPropsType = {
   users: UserType[];
@@ -37,23 +37,15 @@ const Users: FC<UsersPropsType> = ({
   followingInProgress,
   toggleFollowingInProgress,
 }) => {
-  let pagesCount = Math.ceil(totalPageCount / pageSize);
-  let pages = [];
-  for (let i = 1; i <= pagesCount; i++) {
-    pages.push(i);
-  }
-
   return (
     <div>
-      {pages.map((u) => (
-        <span
-          className={u === currentPage ? s.currentPage : ""}
-          key={u}
-          onClick={() => onChangePage(u)}
-        >
-          {u}
-        </span>
-      ))}
+      <Paginator
+        totalItemsCount={totalPageCount}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        portionSize={10}
+        onPageChange={onChangePage}
+      />
       {isFetching ? (
         <img src={loader} alt="Loading..." />
       ) : (
