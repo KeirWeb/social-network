@@ -1,0 +1,66 @@
+.root {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+.title {
+	font-weight: 700;
+	font-size: 30px;
+	margin-bottom: 30px;
+}
+.row {
+	flex: 1 1 auto;
+	display: grid;
+	grid-template-columns: 2fr 10fr;
+}
+.dialogs {
+	flex: 0 1 250px;
+	border-right: 1px solid #4608ad;
+	height: 100%;
+	padding-left: 15px;
+}
+
+.messages {
+	padding: 0 30px 30px;
+	display: flex;
+	flex-direction: column;
+	ul {
+		flex: 1 1 auto;
+	}
+}
+
+.input {
+	width: 100%;
+	border-radius: 20px;
+	border: 1px solid #03b48a;
+	padding: 15px;
+	padding-right: 180px;
+	outline: none;
+	resize: none;
+	height: 100%;
+}
+
+.btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	right: 0px;
+	top: 50%;
+	transform: translate(0px, -50%);
+	max-width: 150px;
+	width: 100%;
+	height: 100%;
+	border-radius: 0 20px 20px 0;
+	@media (any-hover: hover) {
+		&:hover {
+			color: #fff;
+			background-color: #03b48a;
+		}
+	}
+}
+.newMessageWrapper {
+	position: relative;
+	overflow: hidden;
+	max-height: 55px;
+}

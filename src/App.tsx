@@ -1,41 +1,19 @@
-import React from "react";
-import "./App.css";
-import Footer from "./components/Footer/Footer";
-import Main from "./components/Main/Main";
-import HeaderContainer from "./components/Header/HeaderContainer";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { compose } from "redux";
-import { initializeApp } from "./redux/app-reducer";
-import { AppRootState } from "./redux/redux-store";
-import spiner from "../src/assets/images/Spinner.gif";
+import { FC } from 'react'
+import './assets/scss/App.scss'
+import GlobalErrorContainer from './components/GlobalError/GlobalErrorContainer'
+import HeaderContainer from './components/Header/HeaderContainer'
+import Main from './components/Main'
 
-type AppProps = MapStateToProps & {
-  initializeApp: () => void;
-};
-class App extends React.Component<AppProps> {
-  componentDidMount(): void {
-    this.props.initializeApp();
-  }
-  render(): React.ReactNode {
-    return (
-      <div className="app_wrapper">
-        <HeaderContainer />
-        {this.props.isInitialized ? <Main /> : <img src={spiner} />}
-        <Footer />
-      </div>
-    );
-  }
+const App: FC = () => {
+	return (
+		<>
+			<GlobalErrorContainer />
+			<div className='wrapper'>
+				<HeaderContainer />
+				<Main />
+			</div>
+		</>
+	)
 }
 
-type MapStateToProps = {
-  isInitialized: boolean;
-};
-const mapStateToProps = (state: AppRootState): MapStateToProps => ({
-  isInitialized: state.app.isInitialized,
-});
-
-export default compose(
-  withRouter,
-  connect(mapStateToProps, { initializeApp })
-)(App);
+export default App

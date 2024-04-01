@@ -1,0 +1,43 @@
+.myPosts {
+	// .myPosts__title
+
+	&__title {
+		font-size: 30px;
+		font-weight: 700;
+		margin-bottom: 30px;
+	}
+
+	// .myPosts__newPost
+
+	&__newPost {
+		max-width: 920px;
+		margin-bottom: 30px;
+	}
+
+	// .myPosts__text
+
+	&__text {
+		display: block;
+		font-size: 18px;
+		resize: none;
+		background-color: #e6eeea;
+		max-height: 150px;
+		width: 100%;
+		outline: none;
+		padding: 15px;
+		margin-bottom: 20px;
+	}
+
+	// .myPosts__btn
+
+	&__btn {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-left: auto;
+		background-color: #03b48a;
+		color: #fff;
+		padding: 5px 15px;
+		font-size: 18px;
+	}
+}

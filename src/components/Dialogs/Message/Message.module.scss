@@ -1,0 +1,10 @@
+.message {
+	font-size: 18px;
+	&:not(:last-child) {
+		margin-bottom: 30px;
+	}
+}
+
+.right {
+	text-align: right;
+}

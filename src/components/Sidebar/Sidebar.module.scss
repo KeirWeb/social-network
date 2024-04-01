@@ -1,0 +1,20 @@
+.sidebar {
+	background-color: #03b48a;
+	align-self: start;
+	padding: 20px;
+	height: 100%;
+
+	&__item {
+		&:not(:last-child) {
+			margin-bottom: 15px;
+		}
+	}
+	&__link {
+		&.active {
+			color: #4608ad;
+		}
+		color: #fff;
+		font-size: 34px;
+		font-weight: 500;
+	}
+}

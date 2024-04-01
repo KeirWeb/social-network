@@ -1,0 +1,55 @@
+.userInfo {
+	display: flex;
+	gap: 30px;
+	margin-bottom: 30px;
+	// .userInfo__ava
+
+	&__ava {
+		flex: 0 0 150px;
+		height: 150px;
+		position: relative;
+		img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	// .userInfo__desc
+
+	&__desc {
+	}
+
+	// .userInfo__name
+
+	&__name {
+		font-size: 22px;
+		font-weight: 500;
+		margin-bottom: 20px;
+	}
+
+	// .userInfo__item
+
+	&__item {
+		display: flex;
+		gap: 5px;
+		font-size: 18px;
+		&:not(:last-child) {
+			margin-bottom: 5px;
+		}
+	}
+
+	// .userInfo__item-label
+
+	&__itemLabel {
+		font-weight: 700;
+	}
+
+	// .userInfo__item-value
+
+	&__itemValue {
+	}
+}

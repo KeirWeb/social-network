@@ -1,0 +1,17 @@
+.root {
+	display: inline-block;
+	padding-top: 15px;
+	font-size: 20px;
+}
+.label {
+	font-weight: 700;
+}
+.value {
+	line-height: 120%;
+}
+.input {
+	outline: none;
+	border: 1px solid #03b48a;
+	border-radius: 10px;
+	padding: 5px 10px;
+}

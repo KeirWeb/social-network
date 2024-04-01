@@ -1,0 +1,10 @@
+.dialog {
+	&.active {
+		font-weight: 700;
+	}
+	cursor: pointer;
+	font-size: 18px;
+	&:not(:last-child) {
+		margin-bottom: 30px;
+	}
+}
