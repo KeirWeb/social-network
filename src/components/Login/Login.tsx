@@ -72,6 +72,12 @@ const Login: FC<PropsType> = ({ loginThunk, captcha }) => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          <p> To log in get registered <a href={'https://social-network.samuraijs.com/'}
+               target={'_blank'}>here</a></p>
+              <p>or use common test account credentials:</p>
+              <p>Email: free@samuraijs.com</p>
+              <p>Password: free</p>
+         
           <Box
             component="form"
             onSubmit={formik.handleSubmit}
